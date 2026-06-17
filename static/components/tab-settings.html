@@ -1,0 +1,83 @@
+<div class="max-w-6xl mx-auto space-y-lg pb-xl">
+    <section class="flex justify-between items-end">
+        <div>
+            <h2 class="font-headline-lg text-headline-lg text-primary">System Settings</h2>
+            <p class="font-body-md text-body-md text-on-surface-variant">Manage diagnostic input sources, neural network sensitivity, and database integrity.</p>
+        </div>
+    </section>
+    
+    <div class="grid grid-cols-12 gap-lg">
+        <!-- Left Column: Settings Categories -->
+        <div class="col-span-12 lg:col-span-8 space-y-lg">
+            <!-- Input Calibration Section -->
+            <div class="diagnostic-card rounded-none overflow-hidden">
+                <div class="bg-surface-container-low px-md py-sm border-b border-outline-variant flex items-center justify-between">
+                    <div class="flex items-center gap-sm">
+                        <span class="material-symbols-outlined text-primary">video_settings</span>
+                        <span class="font-label-bold text-label-bold uppercase">Input Calibration</span>
+                    </div>
+                </div>
+                <div class="p-lg grid grid-cols-2 gap-lg">
+                    <div class="space-y-sm">
+                        <label class="font-label-bold text-label-bold text-on-surface-variant block uppercase" for="settings-video-source">Primary Video Source</label>
+                        <div class="relative">
+                            <select id="settings-video-source" class="w-full bg-surface border border-outline-variant rounded-none px-md py-sm font-body-md text-body-md appearance-none focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                                <option value="">Loading videos...</option>
+                            </select>
+                        </div>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant italic">Select the simulated probe feed video.</p>
+                    </div>
+                    <div class="space-y-sm">
+                        <label class="font-label-bold text-label-bold text-on-surface-variant block uppercase" for="settings-fps-cap">Sampling Frequency</label>
+                        <select id="settings-fps-cap" class="w-full bg-surface border border-outline-variant rounded-none px-md py-sm font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                            <option value="15">15 FPS</option>
+                            <option value="30" selected>30 FPS (Standard)</option>
+                            <option value="60">60 FPS</option>
+                            <option value="0">Uncapped / Max GPU Speed</option>
+                        </select>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant italic">Higher frame rates increase GPU load but improve AI tracking.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Neural Engine Section -->
+            <div class="diagnostic-card rounded-none overflow-hidden">
+                <div class="bg-surface-container-low px-md py-sm border-b border-outline-variant flex items-center justify-between">
+                    <div class="flex items-center gap-sm">
+                        <span class="material-symbols-outlined text-primary">psychology</span>
+                        <span class="font-label-bold text-label-bold uppercase">Neural Engine</span>
+                    </div>
+                    <span class="font-label-sm text-label-sm text-on-tertiary-container font-bold">V4.2 STABLE</span>
+                </div>
+                <div class="p-lg space-y-lg">
+                    <div class="space-y-md">
+                        <div class="flex justify-between items-center">
+                            <label class="font-label-bold text-label-bold text-on-surface-variant uppercase" for="settings-confidence-threshold">Classification Confidence Threshold</label>
+                            <span class="font-display-measurement text-primary text-[24px]" id="threshold-val">0.50</span>
+                        </div>
+                        <input class="w-full h-1 bg-surface-variant rounded-none appearance-none cursor-pointer accent-primary" id="settings-confidence-threshold" max="0.95" min="0.10" step="0.05" type="range" value="0.50">
+                        <div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant opacity-60">
+                            <span>RELAXED (0.10)</span>
+                            <span>STRICT (0.95)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Right Column: Health Monitor Widget -->
+        <div class="col-span-12 lg:col-span-4 space-y-lg">
+            <div class="diagnostic-card rounded-none p-lg">
+                <div class="flex items-center justify-between mb-lg">
+                    <h3 class="font-label-bold text-label-bold uppercase text-primary">System Health</h3>
+                    <span class="material-symbols-outlined text-tertiary-fixed-dim" style="font-variation-settings: 'FILL' 1;">analytics</span>
+                </div>
+                <div class="space-y-xl">
+                    <!-- GPU Info -->
+                    <div class="space-y-xs">
+                        <p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Ultrasound GPU</p>
+                        <p class="font-headline-sm text-headline-sm text-primary" id="settings-gpu-name">Detecting GPU...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

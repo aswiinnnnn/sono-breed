@@ -1,0 +1,135 @@
+<!-- Filter Bar -->
+<div class="bg-surface-container-lowest border border-outline-variant p-md flex flex-wrap items-center justify-between gap-md text-left">
+    <div class="flex flex-wrap items-center gap-md flex-1 min-w-[300px]">
+        <div class="relative flex-grow max-w-md">
+            <span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline">search</span>
+            <input id="records-search-input" class="w-full pl-xl pr-md py-sm bg-white border border-outline-variant rounded-none font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" placeholder="Search by ID or RFID..." type="text">
+        </div>
+        <div class="flex items-center gap-sm relative">
+            <span class="font-label-bold text-label-bold text-on-surface-variant uppercase text-xs">Date:</span>
+            
+            <!-- Hidden native select for code compatibility -->
+            <select id="records-date-filter" class="hidden">
+                <option value="all" selected>All Time</option>
+                <option value="today">Today</option>
+                <option value="yesterday">Yesterday</option>
+                <option value="this-week">This Week</option>
+                <option value="this-month">This Month</option>
+                <option value="custom">Custom Range...</option>
+            </select>
+
+            <!-- Custom Dropdown Trigger Button -->
+            <div class="relative inline-block text-left" id="custom-dropdown-container">
+                <button type="button" id="custom-dropdown-trigger" class="flex items-center justify-between gap-sm bg-white border border-outline-variant rounded-none px-md py-sm font-body-md text-body-md text-primary hover:border-primary outline-none transition-all cursor-pointer min-w-[140px]">
+                    <span id="custom-dropdown-selected-text">All Time</span>
+                    <span class="material-symbols-outlined text-[18px] text-on-surface-variant">expand_more</span>
+                </button>
+                
+                <!-- Custom Dropdown Menu -->
+                <div id="custom-dropdown-menu" class="hidden absolute left-0 mt-xs w-48 bg-white border border-outline-variant shadow-lg z-50 py-sm overflow-hidden" style="border-radius: 0px;">
+                    <button type="button" class="dropdown-item w-full text-left px-md py-sm font-body-md text-body-md text-on-surface hover:bg-surface-container-low transition-colors block active:bg-surface-container-high" data-value="all">All Time</button>
+                    <button type="button" class="dropdown-item w-full text-left px-md py-sm font-body-md text-body-md text-on-surface hover:bg-surface-container-low transition-colors block active:bg-surface-container-high" data-value="today">Today</button>
+                    <button type="button" class="dropdown-item w-full text-left px-md py-sm font-body-md text-body-md text-on-surface hover:bg-surface-container-low transition-colors block active:bg-surface-container-high" data-value="yesterday">Yesterday</button>
+                    <button type="button" class="dropdown-item w-full text-left px-md py-sm font-body-md text-body-md text-on-surface hover:bg-surface-container-low transition-colors block active:bg-surface-container-high" data-value="this-week">This Week</button>
+                    <button type="button" class="dropdown-item w-full text-left px-md py-sm font-body-md text-body-md text-on-surface hover:bg-surface-container-low transition-colors block active:bg-surface-container-high" data-value="this-month">This Month</button>
+                    <button type="button" class="dropdown-item w-full text-left px-md py-sm font-body-md text-body-md text-on-surface hover:bg-surface-container-low transition-colors block active:bg-surface-container-high" data-value="custom">Custom Range...</button>
+                </div>
+            </div>
+        </div>
+        <div id="records-custom-date-container" class="flex items-center gap-sm" style="display: none;">
+            <div class="relative">
+                <input type="text" id="records-date-start" readonly placeholder="Start Date" class="bg-white border border-outline-variant rounded-none pl-md pr-xl py-sm font-body-md text-body-md focus:border-primary outline-none transition-all cursor-pointer w-[140px]">
+                <span class="material-symbols-outlined absolute right-sm top-1/2 -translate-y-1/2 text-outline text-[18px] pointer-events-none">calendar_today</span>
+            </div>
+            <span class="text-on-surface-variant text-xs uppercase font-bold">to</span>
+            <div class="relative">
+                <input type="text" id="records-date-end" readonly placeholder="End Date" class="bg-white border border-outline-variant rounded-none pl-md pr-xl py-sm font-body-md text-body-md focus:border-primary outline-none transition-all cursor-pointer w-[140px]">
+                <span class="material-symbols-outlined absolute right-sm top-1/2 -translate-y-1/2 text-outline text-[18px] pointer-events-none">calendar_today</span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- High-Density Data Table -->
+<div class="flex-1 bg-white border border-outline-variant overflow-auto relative">
+    <table class="w-full border-collapse text-left">
+        <thead class="sticky top-0 bg-surface-container-high z-10 border-b border-outline-variant">
+            <tr>
+                <th class="p-md font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider border-r border-outline-variant">Scan ID</th>
+                <th class="p-md font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider border-r border-outline-variant">RFID Tag</th>
+                <th class="p-md font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider border-r border-outline-variant">Timestamp</th>
+                <th class="p-md font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider border-r border-outline-variant">Gestational Diagnosis</th>
+                <th class="p-md font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider">Action</th>
+            </tr>
+        </thead>
+        <tbody id="records-table-body" class="divide-y divide-outline-variant font-body-md text-body-md text-on-surface">
+            <tr>
+                <td colspan="5" class="no-data text-center p-md text-on-surface-variant">Loading records...</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- Detailed Analytics Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg text-left">
+    <!-- Pregnancy Rate Card -->
+    <div class="bg-white border border-outline-variant p-md flex flex-col justify-between">
+        <div>
+            <div class="flex justify-between items-start">
+                <p class="font-label-bold text-label-bold text-on-surface-variant uppercase">Pregnancy Rate</p>
+                <span class="material-symbols-outlined text-on-tertiary-container">verified</span>
+            </div>
+            <h3 id="stats-pregnancy-rate" class="font-display-measurement text-display-measurement text-primary mt-xs">0.0<span class="text-headline-sm">%</span></h3>
+        </div>
+        <div class="mt-md">
+            <div class="w-full bg-surface-container h-1.5 rounded-none overflow-hidden">
+                <div id="stats-pregnancy-bar" class="bg-on-tertiary-container h-full" style="width: 0%"></div>
+            </div>
+            <p class="font-label-sm text-label-sm text-outline mt-sm">Percentage of positive gestational scans</p>
+        </div>
+    </div>
+    <!-- Avg Scan Time -->
+    <div class="bg-white border border-outline-variant p-md flex flex-col justify-between">
+        <div>
+            <div class="flex justify-between items-start">
+                <p class="font-label-bold text-label-bold text-on-surface-variant uppercase">Avg Scan Time</p>
+                <span class="material-symbols-outlined text-secondary">timer</span>
+            </div>
+            <h3 id="stats-avg-scan-time" class="font-display-measurement text-display-measurement text-primary mt-xs">0.0<span class="text-headline-sm">s</span></h3>
+        </div>
+        <div class="mt-md">
+            <div class="flex gap-[2px] items-end h-8">
+                <div class="bg-outline-variant w-full h-[60%]"></div>
+                <div class="bg-outline-variant w-full h-[80%]"></div>
+                <div class="bg-primary w-full h-[40%]"></div>
+                <div class="bg-outline-variant w-full h-[90%]"></div>
+                <div class="bg-outline-variant w-full h-[70%]"></div>
+            </div>
+            <p class="font-label-sm text-label-sm text-outline mt-sm">Processing time is stable</p>
+        </div>
+    </div>
+    <!-- Volume Heatmap / Distribution -->
+    <div class="bg-white border border-outline-variant p-md flex flex-col justify-between">
+        <div>
+            <div class="flex justify-between items-start">
+                <p class="font-label-bold text-label-bold text-on-surface-variant uppercase">Pregnancy Distribution</p>
+                <span class="material-symbols-outlined text-on-surface-variant">analytics</span>
+            </div>
+            <h3 class="font-display-measurement text-display-measurement text-primary mt-xs" id="stats-total-scans">0<span class="text-headline-sm"> scans</span></h3>
+        </div>
+        <div class="mt-md flex justify-between items-center text-on-surface-variant">
+            <div class="text-center">
+                <p id="stats-pregnant" class="font-label-bold text-label-bold">0</p>
+                <p class="font-label-sm text-label-sm uppercase">Pregnant</p>
+            </div>
+            <div class="w-px h-6 bg-outline-variant"></div>
+            <div class="text-center">
+                <p id="stats-non-pregnant" class="font-label-bold text-label-bold">0</p>
+                <p class="font-label-sm text-label-sm uppercase">Non-Pregnant</p>
+            </div>
+            <div class="w-px h-6 bg-outline-variant"></div>
+            <div class="text-center">
+                <p id="stats-rate" class="font-label-bold text-label-bold">0%</p>
+                <p class="font-label-sm text-label-sm uppercase">Pregnancy Rate</p>
+            </div>
+        </div>
+    </div>
+</div>
